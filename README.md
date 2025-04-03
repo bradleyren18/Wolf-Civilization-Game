@@ -1,1 +1,1 @@
-Wolf game
+[b]Wolf game[/b]

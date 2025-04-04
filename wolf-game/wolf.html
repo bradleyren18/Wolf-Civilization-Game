@@ -5,15 +5,17 @@
         <link rel="stylesheet" href="wolf.css"></link>
     </head>
     <body>
-        <h1 id="meatCount">Meat: 20 | Bone: 10 | Wood: 0 | Stone: 0</h1>
+        <h1 id="meatCount">Meat: 0 | Bone: 0 | Wood: 0 | Stone: 0</h1>
         <h1 id="territoryCount">Territory: 1</h1>
-        <h1 id="wolvesCount">Hunters: 0 | Scouts: 0 | Helpers: 0 | Lumberjacks: 0 | Miners: 0</h1>
+        <h1 id="wolvesCount">Hunters: 1 | Scouts: 0 | Helpers: 0 | Lumberjacks: 0 | Miners: 0</h1>
         <h1 id="timer">Day 0</h1>
-        <button id="hunterAdd">Add hunter (20 meat)</button>
-        <button id="scoutAdd">Add scout (20 meat)</button>
-        <button id="helperAdd">Add helper (30 meat)</button>
-        <button id="lumberjackAdd">Add lumberjack (10 meat)</button>
-        <button id="minerAdd">Add miner (10 meat)</button>
+        <button id="hunterAdd" disabled="true">Add hunter (20 meat)</button>
+        <button id="scoutAdd" disabled="true">Add scout (20 meat)</button>
+        <button id="helperAdd" disabled="true">Add helper (30 meat)</button>
+        <button id="lumberjackAdd" disabled="true">Add lumberjack (10 meat)</button>
+        <button id="minerAdd" disabled="true">Add miner (10 meat)</button>
+        <h2>Latest event to happen: </h2>
+        <h2 id="latestEvent">Hunter added.</h2>
         <p id="log">Log: </p>
     </body>
     <script src="wolf.js"></script>

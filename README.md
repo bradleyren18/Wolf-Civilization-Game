@@ -1,6 +1,6 @@
 #Wolf game (v1.0)
 
-##Rules: 
+****Rules: ****
 
 ###You are controlling a wolf pack, which needs 500 territory to win. You start with 1 territory.
 ###The wolves need meat and bone to survive, which is provided by hunters. They produce 4 meat and 2 bone per day and cost 20 meat and 10 bone to buy. Each wolf consumes 2 meat and 1 bone per day.

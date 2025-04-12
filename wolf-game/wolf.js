@@ -38,10 +38,14 @@ var bowEquipped = false;
 var crossbowEquipped = false;
 
 function daily(){
-    meat -= totalWolves*meatConsumedPerWolf;
-    bone -= totalWolves*meatConsumedPerWolf/2;
-    currentTime++;
     totalWolves = hunters+scouts+helpers+lumberjacks+miners;
+    if (meat >= totalWolves*meatConsumedPerWolf){
+        meat -= totalWolves*meatConsumedPerWolf;
+    }
+    if (bone >= totalWolves*meatConsumedPerWolf/2){
+        bone -= totalWolves*meatConsumedPerWolf/2;
+    }
+    currentTime++;
 
     const extraResources = (hunters+helpers)*meatProducedPerHunter/2;
     meat += extraResources*2;
@@ -87,11 +91,9 @@ function perFrame(){
     display();
     upgrades();
     meatProductionRate = (hunters+helpers)*meatProducedPerHunter - totalWolves*meatConsumedPerWolf;
-    lose = meatProductionRate == 0 && meat < 20;
-    if (meat < 0 || lose){
-        alert("You lose :(");
-        clearInterval(interval);
-    }
+    lose = meatProductionRate == 0 && meat < 20 && scouts == 0 && helpers == 0;
+    lose2 = meat < 0 || territory <= 0
+    
     if(meat >= 10 && bone >= 5){
         lumberjackAddBtn.disabled = false;
         minerAddBtn.disabled = false;
@@ -106,30 +108,39 @@ function perFrame(){
         hunterAddBtn.disabled = true;
         scoutAddBtn.disabled = true;
     }
-    if (meat >= 30 && bone >= 15){
+    if (meat >= 50 && bone >= 25){
         helperAddBtn.disabled = false;
     }else{
         helperAddBtn.disabled = true;
     }
 
-    if (territory >= 500){
+    if (territory >= 1000){
         alert("You win! :)");
+        cancelAnimationFrame(animationFrame);
         clearInterval(interval);
     }
-    requestAnimationFrame(perFrame)
+    else if (lose || lose2){
+        alert("You lose :(");
+        cancelAnimationFrame(animationFrame);
+        clearInterval(interval);
+    }
+    else{
+        var animationFrame = requestAnimationFrame(perFrame)
+    }
 }
 function events(){
-    if (meat > 20 && territory > 1 && hunters > 1 && scouts > 1){
+    if (meat > 21 && hunters > 2){
         const chance = Math.floor(Math.random()*40);
         if (chance == 10){
             meat -= 20;
-            logText.innerText += "\n The meat storage hut was raided. You lose 20 meat :(";
-            latestEventText.innerText = "The meat storage hut was raided. You lose 20 meat :(";
+            hunters -= 1;
+            logText.innerText += "\n The meat storage hut was raided. You lose 20 meat :( and a hunter :( :(";
+            latestEventText.innerText = "The meat storage hut was raided. You lose 20 meat :( and a hunter :( :(";
         }
         else if (19 < chance < 23){
             territory -= 1;
-            logText.innerText += "\n One of your territories revolted. You lose 1 territory :(";
-            latestEventText.innerText = "One of your territories revolted. You lose 1 territory :(";
+            logText.innerText += "\n An enemy attacked. You lose 1 territory.";
+            latestEventText.innerText = "An enemy attacked. You lose 1 territory";
         }
         else if (chance == 30){
             meat += 40;
@@ -188,8 +199,8 @@ function upgrades(){
             logText.innerText += "\n All scouts have crossbows!";
             latestEventText.innerText = "All scouts have crossbows!";
             stone -= 50;
-            wood -= 50;
-            bone -= 50;
+            wood -= 100;
+            bone -= 100;
         }
     }
 }
@@ -212,6 +223,7 @@ function update(){
     scoutAddBtn.onclick = ()=>{
         logText.innerText += "\n Scout added.";
         latestEventText.innerText = "Scout added.";
+        territory += 1;
         scouts += 1;
         meat -= 20;
         bone -= 10;
@@ -220,8 +232,8 @@ function update(){
         logText.innerText += "\n Helper added.";
         latestEventText.innerText = "Helper added.";
         helpers += 1;
-        meat -= 30;
-        bone -= 15;
+        meat -= 50;
+        bone -= 25;
     }
     lumberjackAddBtn.onclick = ()=>{
         logText.innerText += "\n Lumberjack added.";
@@ -240,5 +252,5 @@ function update(){
 }
 
 update();
-requestAnimationFrame(perFrame)
+var animationFrame = requestAnimationFrame(perFrame);
 var interval = setInterval(()=>{daily(); events()}, 1000);
